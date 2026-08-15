@@ -1,0 +1,211 @@
+<title>סלון פינתי בעל מיטה זוגית נשלפת וארגז מצעים</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --ground:#E9E7E2; --page:#FFFFFF; --ink:#000000; --ink-2:#3C3C3C;
+  --muted:#A1A1A1; --line:#E6E4DF; --line-2:#F1F0EC;
+  --gold:#FFC61A; --bezel:#1B1D20; --brand:#2B4A6F;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#101112; --bezel:#2A2D31;
+}}
+:root[data-theme="dark"]{ --ground:#101112; --bezel:#2A2D31; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ground); direction:rtl; color:var(--ink);
+  font-family:"Assistant","Heebo","Rubik","Segoe UI","Arial Hebrew",system-ui,sans-serif;
+  font-variant-numeric:tabular-nums;
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:26px 14px;
+}
+.device{width:390px; max-width:100%; background:var(--bezel); border-radius:42px;
+  padding:11px; box-shadow:0 22px 60px rgba(20,18,16,.3), 0 2px 6px rgba(20,18,16,.2)}
+.screen{background:var(--page); border-radius:32px; overflow:hidden;
+  height:78vh; min-height:540px; max-height:860px; overflow-y:auto;
+  -webkit-overflow-scrolling:touch}
+
+.strip{background:#080808; color:#fff; font-size:11.5px; text-align:center;
+       padding:6px 10px; letter-spacing:.01em}
+.strip span{opacity:.72; margin:0 6px}
+.hdr{display:flex; align-items:center; gap:10px; padding:11px 14px 9px}
+.hdr .ic{display:flex; gap:13px; color:#111; flex:0 0 auto}
+.hdr svg{width:21px; height:21px}
+.hdr .logo{flex:1 1 auto; display:flex; justify-content:center}
+.hdr .logo img{height:26px; width:auto}
+.search{margin:0 14px 12px; border:1px solid var(--line); border-radius:8px;
+  display:flex; align-items:center; gap:9px; padding:9px 11px; color:#9A9A9A; font-size:13.5px}
+.search svg{width:16px; height:16px; flex:0 0 auto}
+.crumb{padding:0 14px 10px; font-size:11.5px; color:#8C8C8C}
+.hero{display:block; width:100%; height:auto; background:#fff}
+
+.buy{padding:14px}
+.ptitle{margin:0; font-size:20px; font-weight:700; line-height:1.25}
+.ptitle em{font-style:normal; color:#9A9A9A; font-weight:600; font-size:15px;
+           margin-inline-start:6px}
+.psub{margin:3px 0 12px; font-size:13.5px; color:#6E6E6E}
+.prices{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+.was{color:var(--muted); text-decoration:line-through; font-size:17px}
+.now{font-size:22px; font-weight:700}
+.off{background:var(--gold); color:#000; font-size:13px; font-weight:700;
+     border-radius:4px; padding:2px 7px}
+.pay{margin:7px 0 0; font-size:12.5px; color:#6E6E6E}
+.pay b{color:#000}
+
+.opt{margin-top:16px}
+.opt h3{margin:0 0 8px; font-size:14px; font-weight:700}
+.opt h3 i{font-style:normal; color:#C33}
+.picks{display:flex; gap:9px}
+.pick{flex:1 1 0; border:1px solid var(--line); border-radius:8px; padding:9px 10px;
+      font-size:13px; line-height:1.3}
+.pick.on{border-color:#000; box-shadow:inset 0 0 0 1px #000}
+.pick small{display:block; color:#8C8C8C; font-size:11px}
+.cartrow{display:flex; gap:9px; align-items:center; margin-top:16px}
+.qty{display:flex; align-items:center; border:1px solid var(--line); border-radius:50px;
+     padding:6px 12px; gap:12px; font-size:16px; color:#555}
+.add{flex:1 1 auto; background:#000; color:#fff; border:0; border-radius:50px;
+     font-family:inherit; font-size:17px; font-weight:700; padding:14px 20px;
+     min-height:48px}
+.fine{margin:8px 0 0; font-size:11px; color:#9A9A9A}
+
+.trust{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);
+       border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:16px}
+.trust div{background:#fff; padding:11px 12px; font-size:12px; line-height:1.35}
+.trust b{display:block; font-size:12.5px}
+.trust span{color:#8C8C8C}
+
+.tabs{border-top:1px solid var(--line)}
+.tab{border-bottom:1px solid var(--line)}
+.tab > button{width:100%; display:flex; align-items:center; gap:10px; background:transparent;
+  border:0; font-family:inherit; color:inherit; padding:14px; min-height:52px;
+  cursor:pointer; text-align:start; font-size:18px}
+.tab > button:focus-visible{outline:2px solid var(--brand); outline-offset:-2px}
+.tab .lbl{flex:1 1 auto}
+.chev{flex:0 0 auto; width:20px; height:20px; color:#9A9A9A; transition:transform .22s ease-out}
+/* CHILD COMBINATORS, NOT DESCENDANT. The comfort section sits INSIDE the
+   dimensions section, so a descendant rule made the outer tab's open state
+   force the inner panel open and spin the inner arrow with it: the inner
+   arrow pointed up before it was touched, and pressing it changed data-open
+   while the outer rule kept the panel visible. Every rule here now binds to
+   its own tab. */
+.tab[data-open="1"] > button .chev{transform:rotate(180deg); color:#000}
+.tab > .body{display:none}
+.tab[data-open="1"] > .body{display:block}
+.body img{display:block; width:100%; height:auto; background:#fff}
+.fig{background:#FAFAF8; padding:10px 14px}
+.fig + .fig{border-top:1px solid var(--line-2)}
+.fig:last-of-type{border-bottom:1px solid var(--line)}
+.fig img{display:block; width:100%; height:auto}
+/* A HEADING HAS TO LOOK LIKE ONE. At 12.5 px, grey and letter-spaced it
+   read as another quiet row - Doron could not tell the label from the
+   content. It is now the size of the rows and darker than them, with air
+   above it and a rule that closes the group before it. */
+.gh{margin:0; padding:22px 14px 8px; font-size:15px; font-weight:700;
+    color:#000; background:#fff; border-top:1px solid var(--line)}
+.gh:first-of-type{border-top:0; padding-top:16px}
+.unitline{margin:0; padding:6px 14px 18px; font-size:11.5px; color:#9A9A9A}
+.dims{margin:0}
+.drow{display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:9px 14px; border-top:1px solid var(--line-2)}
+.drow dt{margin:0; color:#4B4F54; font-size:14px}
+.drow dd{margin:0; font-weight:700; font-size:15px; white-space:nowrap}
+.drow dd .u{font-weight:400; color:#9A9A9A; font-size:12px; margin-inline-start:3px}
+.bdg{flex:0 0 auto; width:22px; height:22px; border-radius:50%; background:var(--brand);
+  color:#fff; font-size:11.5px; font-weight:700; display:flex; align-items:center;
+  justify-content:center}
+.sub{margin:0; padding:14px 14px 2px; font-size:13px; font-weight:700; color:#8C8C8C}
+.pad{height:30px}
+
+@media (max-width:520px){
+  body{padding:0; display:block}
+  .device{width:100%; border-radius:0; padding:0; box-shadow:none}
+  .screen{border-radius:0; height:auto; max-height:none; min-height:100vh}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.back{display:block; padding:10px 14px; font-size:12.5px; color:#6E6E6E;
+      text-decoration:none; border-bottom:1px solid var(--line-2)}
+.live{display:inline-block; margin:10px 14px 0; font-size:12px; color:#6E6E6E}
+.note{margin:0; padding:10px 14px 16px; font-size:11.5px; color:#9A9A9A;
+      line-height:1.5}
+</style>
+
+<div class="device">
+ <div class="screen">
+  <div class="strip">זמני אספקה מהירים לכל הארץ<span>·</span>12 תשלומים ללא ריבית</div>
+  <a class="back" href="index.html">→ חזרה לרשימת הדגמים</a>
+
+  <div class="hdr">
+    <div class="ic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11L21 7H6"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20s-7-4.6-7-9.4A4 4 0 0 1 12 8a4 4 0 0 1 7-2.6c0 4.8-7 14.6-7 14.6z"/></svg>
+    </div>
+    <div class="logo"><img src="img/logo.png" alt="ויטוריו דיוואני"></div>
+    <div class="ic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </div>
+  </div>
+
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    מה תרצה לחפש?
+  </div>
+  <div class="crumb">סלון פינתי · סלונים פינתיים</div>
+
+  <img class="hero" src="img/p03_hero.jpg" alt="סלון פינתי בעל מיטה זוגית נשלפת וארגז מצעים">
+
+  <div class="buy">
+    <h1 class="ptitle">סלון פינתי בעל מיטה זוגית נשלפת וארגז מצעים</h1>
+    <p class="psub">סלון פינתי בעל מיטה זוגית נשלפת וארגז מצעים</p>
+
+    <div class="opt">
+      <h3>צד שזלונג <i>*</i></h3>
+      <div class="picks">
+        <div class="pick on">שזלונג ימני<small>בעמידה מול הספה</small></div>
+        <div class="pick">שזלונג שמאלי<small>בעמידה מול הספה</small></div>
+      </div>
+    </div>
+
+    <div class="cartrow">
+      <div class="qty">−&nbsp;<span style="color:#000">1</span>&nbsp;+</div>
+      <button class="add" type="button">הוסף לסל הקניות</button>
+    </div>
+    <p class="fine">*בכפוף לתקנון.</p>
+  </div>
+
+  <div class="trust">
+    <div><b>זמן אספקה</b><span>עד 24 ימי עסקים</span></div>
+    <div><b>הובלה והרכבה</b><span>עד הבית, בתוספת תשלום</span></div>
+    <div><b>קניה מאובטחת</b><span>באתר</span></div>
+    <div><b>12 חודשי אחריות</b><span>יבואן רשמי על המוצר</span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab" data-open="0">
+      <button type="button" aria-expanded="false">
+        <span class="lbl">מידות</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="body">
+        <div class="fig"><img src="img/p03_plan.png" alt="מבט מלמעלה ומידות הספה"></div>
+        <dl class="dims"><div class="drow"><dt>אורך — (לאורך הקיר)</dt><dd>300<span class="u">ס״מ</span></dd></div><div class="drow"><dt>עומק השזלונג — (לתוך החדר)</dt><dd>200<span class="u">ס״מ</span></dd></div><div class="drow"><dt>גובה — (מהרצפה עד סוף כרית הגב)</dt><dd>98<span class="u">ס״מ</span></dd></div></dl>
+        <p class="unitline">כל המידות בסנטימטרים</p>
+      </div>
+    </div>
+    <div class="tab" data-open="0"><button type="button" aria-expanded="false"><span class="lbl">זמן אספקה</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="body"></div></div><div class="tab" data-open="0"><button type="button" aria-expanded="false"><span class="lbl">תוספת הובלה</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="body"></div></div><div class="tab" data-open="0"><button type="button" aria-expanded="false"><span class="lbl">אחריות</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="body"></div></div><div class="tab" data-open="0"><button type="button" aria-expanded="false"><span class="lbl">אפשרויות תשלום</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="body"></div></div>
+  </div>
+  <p class="note">מוקאפ לבדיקה. המחיר הוסר בכוונה — הוא לא נאסף מהאתר.<br>
+     <a href="https://vdivani.co.il/product/%d7%a1%d7%a4%d7%94-%d7%a0%d7%a4%d7%aa%d7%97%d7%aa-%d7%9c%d7%9e%d7%99%d7%98%d7%94-%d7%93%d7%92%d7%9d-%d7%a1%d7%9c%d7%99%d7%a4%d7%95-%d7%91%d7%91%d7%93-%d7%90%d7%a4%d7%95%d7%a8-%d7%91%d7%94%d7%99%d7%a8/" target="_blank" rel="noopener">פתיחת הדגם באתר</a></p>
+  <div class="pad"></div>
+ </div>
+</div>
+
+<script>
+document.querySelectorAll(".tab > button").forEach(function(b){
+  b.addEventListener("click", function(e){
+    e.stopPropagation();
+    var t = b.parentElement, open = t.dataset.open === "1";
+    t.dataset.open = open ? "0" : "1";
+    b.setAttribute("aria-expanded", String(!open));
+  });
+});
+</script>
